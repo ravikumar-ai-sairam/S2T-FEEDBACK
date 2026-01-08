@@ -303,7 +303,7 @@ body::after {
     align-items: center;
     position: relative;
 }
-.hero-planet {
+  .hero-planet {
   position: relative;
   width: fit-content;
   display: flex;
@@ -311,46 +311,35 @@ body::after {
   align-items: center;
 }
 
-/* Rotating Earth */
 .hero-earth {
   display: block;
   width: 100%;
-  max-width: 500px;
+  max-width: 400px;
   height: auto;
-  animation: rotateEarth 25s linear infinite;
+  
+  /* --- ADDED ANIMATION --- */
+  animation: rotateEarth 20s linear infinite;
 }
 
-/* The Rectangular Shield */
-.logo-shield-rect {
+.hero-logo-overlay {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 90%; 
-  height: auto;
-  padding: 20px 10px;
-  opacity: 100%;
-  border-radius: 12px; 
-  background: rgba(248, 248, 248, 0.8);
-  backdrop-filter: blur(12px); 
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(50, 245, 160, 0.4);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 5;
+  width: 75%; /* Large size as requested */
+  z-index: 2;
   pointer-events: none;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
 }
-.hero-logo-img {
-  width: 100%;
-  height: auto;
-  display: block;
-}
+
+/* --- ROTATION LOGIC --- */
 @keyframes rotateEarth {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}/* Orbital rings around planet */
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
 .hero-planet::before,
 .hero-planet::after {
     content: '';
@@ -879,13 +868,12 @@ body::after {
 
       <div class="hero-right">
           <div class="hero-right">
+  <div class="hero-right">
   <div class="hero-planet">
     <img src="image.png" class="hero-earth" alt="Earth">
-    
-    <div class="logo-shield-rect">
-       <img src="assets/s2t.png" class="hero-logo-img" alt="S2T Logo">
-    </div>
+    <img src="assets/s2t.png" class="hero-logo-overlay" alt="S2T Logo">
   </div>
+</div>
 </div>
 </div>
     </div>
@@ -1125,3 +1113,4 @@ body::after {
 </body>
 
 </html>
+
