@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>S2T 2026 | Feedback Terminal</title>
+<link rel="icon" href="assets/s2t.png" type="image/png">
+
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700;900&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --electric-yellow: #ffd60a;
+  --neon-green: #32f5a0;
+  --deep-green: #00cc88;
+  --science-blue: #3b82f6;
+  --dark-bg: #020617;
+  --card-bg: rgba(15, 23, 42, 0.85);
+  --glass: rgba(15, 23, 42, 0.8);
+  --border-glow: rgba(50, 245, 160, 0.4);
+  --text-light: #e5f9f0;
+  --muted: #9ca3af;
+  --yellow-glow: rgba(255, 214, 10, 0.35);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: radial-gradient(circle at top, #020617 0%, #020617 40%, #000 100%);
+  color: #f9fafb;
+  font-family: 'Roboto', sans-serif;
+  min-height: 100vh;
+  margin: 0;
+  overflow-x: hidden;
+}
+
+/* Subtle grid + glow */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(148, 163, 184, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148, 163, 184, 0.06) 1px, transparent 1px);
+  background-size: 90px 90px;
+  pointer-events: none;
+  z-index: -2;
+  opacity: 0.4;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  top: -40%;
+  right: -10%;
+  width: 520px;
+  height: 180%;
+  background: radial-gradient(circle at 30% 20%, rgba(56, 189, 248, 0.4), transparent 60%),
+              radial-gradient(circle at 70% 80%, rgba(52, 211, 153, 0.32), transparent 55%);
+  filter: blur(10px);
+  pointer-events: none;
+  z-index: -3;
+}
+
+/* Header */
+
+header {
+  padding: 18px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.96), rgba(8, 47, 73, 0.96));
+  border-bottom: 1px solid rgba(148, 163, 184, 0.35);
+  box-shadow: 0 12px 40px rgba(15, 23, 42, 0.9);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.mission-tag {
+  background: linear-gradient(120deg, var(--electric-yellow), var(--neon-green));
+  font-family: 'Oswald', sans-serif;
+  font-size: 22px;
+  font-weight: 900;
+  padding: 8px 22px;
+  color: #020617;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  border-radius: 999px;
+  box-shadow: 0 10px 40px var(--yellow-glow);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mission-tag::before {
+  content: '●';
+  font-size: 12px;
+}
+
+#status {
+  color: var(--neon-green);
+  font-family: 'Oswald', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-shadow: 0 0 8px rgba(34, 197, 94, 0.8);
+}
+
+/* Layout */
+
+main {
+  display: grid;
+  grid-template-columns: minmax(0, 430px) minmax(0, 1fr);
+  gap: 32px;
+  padding: 32px;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+/* Panels */
+
+.panel {
+  background: var(--glass);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  border-radius: 24px;
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  padding: 26px 24px 28px;
+  position: relative;
+  overflow: hidden;
+  box-shadow:
+    0 18px 60px rgba(15, 23, 42, 0.95),
+    0 0 0 1px rgba(15, 23, 42, 0.9);
+}
+
+.panel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 0% 0%, rgba(96, 165, 250, 0.18), transparent 55%);
+  opacity: 0.9;
+  pointer-events: none;
+}
+
+.panel::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(148, 163, 184, 0.15), transparent 40%);
+  mix-blend-mode: soft-light;
+  pointer-events: none;
+}
+
+/* Headings */
+
+h2 {
+  position: relative;
+  font-family: 'Oswald', sans-serif;
+  color: var(--text-light);
+  letter-spacing: 2px;
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 18px;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+h2::before {
+  content: '';
+  width: 4px;
+  height: 18px;
+  border-radius: 999px;
+  background: linear-gradient(to bottom, var(--neon-green), var(--electric-yellow));
+}
+
+/* Forms */
+
+label {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 14px;
+  display: block;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(107, 114, 128, 0.9);
+  padding: 11px 12px;
+  color: #f9fafb;
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  border-radius: 10px;
+  margin-top: 6px;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease, transform 0.08s ease;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: rgba(156, 163, 175, 0.9);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--neon-green);
+  background: rgba(15, 23, 42, 0.98);
+  box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.5), 0 0 20px rgba(34, 197, 94, 0.25);
+  transform: translateY(-1px);
+}
+
+textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+/* Custom selects */
+
+#grade,
+#event {
+  color: #f9fafb;
+  background-color: rgba(15, 23, 42, 0.9);
+  position: relative;
+  font-family: 'Roboto', sans-serif;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding-right: 34px;
+}
+
+#grade::-ms-expand,
+#event::-ms-expand {
+  display: none;
+}
+
+#grade {
+  background-image: linear-gradient(to right, var(--neon-green), var(--electric-yellow));
+  background-origin: border-box;
+}
+
+#grade,
+#event {
+  position: relative;
+}
+
+#grade::after,
+#event::after {
+  content: '▾';
+}
+
+/* Photo grid */
+
+.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(108px, 1fr));
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.target-hex {
+  position: relative;
+  border-radius: 18px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 1px solid rgba(148, 163, 184, 0.5);
+  background: radial-gradient(circle at 20% 0%, rgba(56, 189, 248, 0.15), transparent 55%);
+  transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease;
+}
+
+.target-hex img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  aspect-ratio: 4 / 5;
+  filter: saturate(1.05);
+  opacity: 0.7;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+.target-hex::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.25), transparent 50%);
+  mix-blend-mode: soft-light;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.target-hex:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.95);
+  border-color: rgba(59, 130, 246, 0.8);
+}
+
+.target-hex:hover img {
+  opacity: 0.95;
+  transform: scale(1.02);
+}
+
+.target-hex.selected {
+  transform: translateY(-2px) scale(1.01);
+  border-color: var(--electric-yellow);
+  box-shadow: 0 0 0 1px rgba(234, 179, 8, 0.6), 0 16px 40px rgba(15, 23, 42, 0.98);
+}
+
+.target-hex.selected::before {
+  opacity: 1;
+}
+
+.target-hex.selected img {
+  opacity: 1;
+}
+@keyframes pulse-status {
+    0% { opacity: 1; }
+    50% { opacity: 0.4; }
+    100% { opacity: 1; }
+}
+
+#status.loading {
+    animation: pulse-status 1s infinite;
+    color: var(--electric-yellow);
+}
+/* Ratings Container */
+.rate-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  margin-top: 12px;
+  background: rgba(30, 41, 59, 0.7); /* Deep blue-ish glass */
+  backdrop-filter: blur(10px); /* Modern frosted glass effect */
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.rate-row:hover {
+  border-color: #60a5fa;
+  background: rgba(30, 41, 59, 0.9);
+  transform: translateY(-2px); /* Slight lift on hover */
+}
+
+/* Label Styling
+.rate-row span:first-child {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: #e2e8f0;
+  font-size: 14px;
+  text-transform: uppercase;
+} */
+
+/* Emoji Group */
+.emojis {
+  display: flex;
+  gap: 12px;
+  padding: 4px 8px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 30px; /* Pill shape for the emojis */
+}
+
+.emojis span {
+  cursor: pointer;
+  opacity: 0.4;
+  font-size: 24px;
+  filter: grayscale(100%); /* Desaturate when inactive */
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Bouncy transition */
+}
+
+/* Hover State - "Peek" effect */
+.emojis span:hover {
+  opacity: 0.8;
+  filter: grayscale(0%);
+  transform: scale(1.3) rotate(5deg);
+}
+
+/* Active/Selected State - "Pop" effect */
+.emojis span.active {
+  opacity: 1;
+  filter: grayscale(0%) drop-shadow(0 0 12px rgba(96, 165, 250, 0.6));
+  transform: scale(1.4);
+}
+
+/* Add a subtle "pulse" animation to the active emoji */
+@keyframes active-pulse {
+  0% { transform: scale(1.4); }
+  50% { transform: scale(1.5); }
+  100% { transform: scale(1.4); }
+}
+
+.emojis span.active {
+  animation: active-pulse 2s infinite ease-in-out;
+}
+/* Buttons */
+
+.btn {
+  width: 100%;
+  padding: 14px 18px;
+  background: linear-gradient(135deg, var(--electric-yellow), var(--neon-green));
+  border: none;
+  color: #020617;
+  font-family: 'Oswald', sans-serif;
+  font-size: 16px;
+  font-weight: 800;
+  margin-top: 18px;
+  cursor: pointer;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  transition: transform 0.14s ease, box-shadow 0.16s ease, filter 0.12s ease;
+  box-shadow: 0 12px 30px var(--yellow-glow);
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 40px rgba(234, 179, 8, 0.45);
+  filter: brightness(1.03);
+}
+
+.btn:active {
+  transform: translateY(0);
+  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.9);
+}
+
+/* Canvas */
+
+canvas {
+  border-radius: 18px;
+  max-width: 100%;
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.95);
+  background: radial-gradient(circle at top, rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.98));
+  border: 1px solid rgba(55, 65, 81, 0.9);
+}
+
+/* Thank You Screen */
+
+#thankYouScreen {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at top, #020617 0%, #000 60%);
+  z-index: 1000;
+  text-align: center;
+  padding: 36px 16px 24px;
+  overflow-y: auto;
+}
+
+#thankYouScreen h1 {
+  color: var(--electric-yellow);
+  font-family: 'Oswald', sans-serif;
+  font-size: 34px;
+  font-weight: 900;
+  margin-bottom: 10px;
+  text-shadow: 0 0 24px var(--yellow-glow);
+}
+
+#thankYouScreen p {
+  color: var(--neon-green);
+  font-size: 17px;
+  margin-bottom: 24px;
+  font-weight: 500;
+}
+
+.button-group {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  max-width: 540px;
+  margin: 0 auto 18px;
+}
+
+.button-group .btn {
+  flex: 1;
+  min-width: 180px;
+}
+
+/* Responsive */
+
+@media (max-width: 1200px) {
+  main {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    gap: 10px;
+    padding: 14px 20px;
+  }
+
+  .mission-tag {
+    font-size: 18px;
+    padding: 6px 16px;
+  }
+
+  h2 {
+    font-size: 14px;
+  }
+
+  .photo-grid {
+    grid-template-columns: repeat(auto-fill, minmax(92px, 1fr));
+    gap: 10px;
+  }
+
+  #thankYouScreen h1 {
+    font-size: 26px;
+  }
+
+  .button-group {
+    flex-direction: column;
+  }
+
+  .button-group .btn {
+    width: 100%;
+  }
+}
+@keyframes scan {
+    0% { top: 0; }
+    100% { top: 100%; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="mission-tag"> S2T FEEDBACK TERMINAL</div>
+    <div id="status">>> SYSTEM_READY</div>
+</header>
+
+<main>
+
+<section class="panel">
+    <h2>🎯 Personnel Input</h2>
+
+    <form id="missionForm">
+        <label>Mission Category</label>
+        <select id="event" required onchange="fetchDrive(this.value);drawPoster()">
+            <option value="">SELECT EVENT...</option>
+            <option>Junior Scientist</option>
+            <option>Senior Scientist</option>
+            <option>Photography</option>
+            <option>English Essay Writing</option>
+            <option>Tamil Essay Writing</option>
+            <option>Podcast</option>
+            <option>Scouts Activities</option>
+            <option>SDG Treasure Hunt</option>
+            <option>Logo Design</option>
+            <option>Rise Above</option>
+        </select>
+         
+        <label>NAME</label>
+        <input id="name" required oninput="drawPoster()" placeholder="Enter your name">
+
+        <label>SCHOOL NAME</label>
+        <input id="school" required oninput="drawPoster()" placeholder="Enter your school">
+
+        <label>CLASS</label>
+        <select id="grade" required onchange="drawPoster()">
+            <option value="">SELECT...</option>
+            <option>8</option>
+            <option>9</option>
+            <option>10</option>
+            <option>11</option>
+            <option>12</option>
+        </select>
+<h2 style="margin-top:30px">📸 Add Photos (Up to 4)</h2>
+<div class="button-group" style="margin-bottom: 15px;">
+    <button type="button" class="btn" style="background: #555; flex: 1;" onclick="document.getElementById('galleryInput').click()">📁 Gallery</button>
+    
+    <button type="button" class="btn" style="background: #555; flex: 1;" onclick="openCamera()">🤳 Live Camera</button>
+    
+    <input type="file" id="galleryInput" accept="image/*" multiple hidden onchange="handleFileUpload(event)">
+</div>
+
+<div id="cameraModal" style="display:none; position:fixed; inset:0; background:rgba(2, 6, 23, 0.98); z-index:2000; flex-direction:column; align-items:center; justify-content:center; padding:20px; backdrop-filter: blur(10px);">
+    <h2 style="color:var(--neon-green); margin-bottom:15px; font-family:'Oswald';">🤳 LIVE MISSION CAPTURE</h2>
+    
+    <div style="position:relative; width:100%; max-width:500px;">
+        <video id="webcam" autoplay playsinline style="width:100%; border:2px solid var(--neon-green); border-radius:20px; transform: scaleX(-1); box-shadow: 0 0 30px rgba(50, 245, 160, 0.3);"></video>
+        <div style="position:absolute; top:0; left:0; width:100%; height:2px; background:var(--neon-green); opacity:0.5; animation: scan 3s linear infinite;"></div>
+    </div>
+    
+    <canvas id="captureCanvas" style="display:none;"></canvas>
+    
+    <div class="button-group" style="margin-top:25px; width:100%; max-width:500px; display:flex; gap:15px;">
+        <button type="button" class="btn" onclick="takeSnapshot()" style="background:var(--neon-green); flex:2;">📸 CAPTURE PHOTO</button>
+        <button type="button" class="btn" onclick="closeCamera()" style="background:#ff4444; flex:1;">✕ EXIT</button>
+    </div>
+</div>
+<div id="photoGrid" class="photo-grid">
+    </div>
+             <h2 style="margin-top:30px">📸 Selected Targets (<span id="count">0</span>/4)</h2>
+<div id="selectionQueue" class="photo-grid" style="min-height: 100px; border: 2px dashed rgba(50, 245, 160, 0.3); padding: 10px; border-radius: 18px;">
+    </div>
+
+<button type="button" class="btn" id="loadCollageBtn" style="background: var(--science-blue); margin-bottom: 20px;">
+    ⚡ Load & Process Collage
+</button>
+   
+
+        <h2 style="margin-top:30px">YOUR RATINGS</h2>
+        <div id="ratingsBody">
+          <p font-family="Oswald">🤩 - Excellent | 😊 - Good | 😐 - Fair | 😡 - Poor</p>
+        </div>
+
+        <label>BEST PART OF THE EVENT</label>
+        <textarea id="best" placeholder="What did you enjoy most?"></textarea>
+
+        <label>ANY IMPROVEMENTS</label>
+        <textarea id="improve" placeholder="How can we make it better?"></textarea>
+        <section class="panel">
+    <h2> Poster Preview</h2>
+    <canvas id="poster" width="1080" height="1350"></canvas>
+</section>
+
+        <button class="btn" type="submit">🚀 Generate Poster</button>
+    </form>
+</section>
+
+</main>
+
+<!-- Success Screen -->
+<div id="thankYouScreen">
+    <h1>🎉 MISSION COMPLETE</h1>
+    <p>Here is your generated poster</p>
+    
+    <div style="max-width:500px; margin:0 auto 30px;">
+        <canvas id="thankYouPreview" width="500" height="625"></canvas>
+    </div>
+    <div class="panel" style="max-width:700px;margin:0 auto 20px;">
+  <h2>📸 Instagram Caption</h2>
+  <textarea id="instaCaption"
+    style="width:100%;min-height:180px;font-size:14px;"
+    readonly></textarea>
+
+  <button class="btn" onclick="copyCaption()" style="margin-top:12px;">
+    📋 Copy Caption
+  </button>
+</div>
+
+    
+    <div class="button-group">
+        <button onclick="editForm()" class="btn" style="background:#444;">✏️ Re-Edit</button>
+        <button onclick="shareMission()" class="btn" style="background:#25D366;">📡 Share Mission</button>
+    </div>
+    
+    <div class="button-group">
+        <a id="downloadLink" class="btn" style="background:var(--electric-yellow); color:#001a0f; text-decoration:none;" download>⬇️ Download Poster</a>
+        <a href="index.html" class="btn" style="background:var(--science-blue);">🏠 Return Home</a>
+    </div>
+</div>
+
+<script>
+const API_URL = "https://script.google.com/macros/s/AKfycbzGLd5bHnXP7TpJQ3wQW8QXbGuslffoglV-3s49tu4wWQTKhYimQilk4i1PGmLKjLwpJw/exec";
+
+const canvas = document.getElementById("poster");
+const ctx = canvas.getContext("2d");
+const statusEl = document.getElementById("status");
+const missionForm = document.getElementById("missionForm");
+const selectionQueue = document.getElementById("selectionQueue");
+const countEl = document.getElementById("count");
+
+let template = new Image();
+let templateLoaded = false;
+let selectedMetaData = []; // Stores {id, thumbnail} for the queue
+let highResImages = [];    // Stores the actual high-res Image objects for the canvas
+const MAX_PHOTOS = 4;
+
+const POSTER_W = 1080;
+const POSTER_H = 1350;
+const PHOTO_BOX = { x: 87.5, y: 513, w: 912.1, h: 578.8 };
+const SCHOOL_BOX = { x: 150, y: 392.9, w: 801.8, h: 98.1 };
+
+template.onload = () => {
+    templateLoaded = true;
+    drawPoster();
+};
+template.src = "poster-template.png";
+
+// --- 1. PHOTO SELECTION & QUEUE LOGIC ---
+
+async function fetchDrive(mission) {
+    const photoGrid = document.getElementById("photoGrid");
+    photoGrid.innerHTML = "<div style='color:var(--neon-green);padding:20px;text-align:center;font-family:Oswald;'>⚡ SCANNING DATABASE...</div>";
+
+    try {
+        const r = await fetch(`${API_URL}?mission=${encodeURIComponent(mission)}`);
+        const data = await r.json();
+        photoGrid.innerHTML = "";
+
+        data.forEach(img => {
+            const box = document.createElement("div");
+            box.className = "target-hex";
+            box.innerHTML = `<img src="${img.thumbnail}">`;
+            box.onclick = () => toggleSelection(img);
+            photoGrid.appendChild(box);
+        });
+    } catch (err) {
+        photoGrid.innerHTML = "<div style='color:var(--electric-yellow);padding:20px;'>⚠️ CONNECTION OFFLINE</div>";
+    }
+}
+
+function toggleSelection(img) {
+    const index = selectedMetaData.findIndex(p => p.id === img.id);
+    
+    if (index > -1) {
+        // Deselect
+        selectedMetaData.splice(index, 1);
+    } else {
+        // Select
+        if (selectedMetaData.length >= MAX_PHOTOS) {
+            alert(`Maximum of ${MAX_PHOTOS} photos allowed.`);
+            return;
+        }
+        selectedMetaData.push(img);
+    }
+    updateSelectionUI();
+}
+
+function updateSelectionUI() {
+    selectionQueue.innerHTML = "";
+    countEl.innerText = selectedMetaData.length;
+
+    selectedMetaData.forEach(img => {
+        const box = document.createElement("div");
+        box.className = "target-hex selected";
+        box.style.width = "80px"; // Smaller preview for the queue
+        box.innerHTML = `
+            <img src="${img.thumbnail}">
+            <div style="position:absolute; top:-5px; right:-5px; background:#ff4444; color:white; border-radius:50%; width:20px; height:20px; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:bold; cursor:pointer; border:1px solid yellow;">✕</div>
+        `;
+        box.onclick = () => toggleSelection(img);
+        selectionQueue.appendChild(box);
+    });
+}
+// --- NEW: Handle Gallery & Camera Uploads ---
+function handleFileUpload(event) {
+    const files = event.target.files;
+    if (!files) return;
+
+    // Check if we already hit the limit
+    if (selectedMetaData.length + files.length > MAX_PHOTOS) {
+        alert(`You can only select a total of ${MAX_PHOTOS} photos.`);
+        return;
+    }
+
+    Array.from(files).forEach(file => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            // Create a "mock" metadata object to fit your existing logic
+            const localImg = {
+                id: "local_" + Date.now() + Math.random(),
+                thumbnail: e.target.result, // Use the base64 as thumbnail
+                isLocal: true,
+                fullData: e.target.result // Store the full data here
+            };
+            
+            selectedMetaData.push(localImg);
+            updateSelectionUI();
+        };
+        reader.readAsDataURL(file);
+    });
+}
+
+// --- UPDATED: Load & Process Collage ---
+// Replace your existing document.getElementById("loadCollageBtn").onclick with this:
+document.getElementById("loadCollageBtn").onclick = async () => {
+    if (selectedMetaData.length === 0) {
+        alert("⚠️ Please select or upload at least 1 photo!");
+        return;
+    }
+
+    const btn = document.getElementById("loadCollageBtn");
+    btn.disabled = true;
+    btn.innerHTML = "⚡ DECRYPTING...";
+    statusEl.innerText = ">> SYNCING TARGETS...";
+    
+    highResImages = []; 
+
+    try {
+        const fetchPromises = selectedMetaData.map(async (meta, index) => {
+            let base64Data;
+            
+            if (meta.isLocal) {
+                // Use the already loaded local data
+                base64Data = meta.fullData;
+            } else {
+                // Fetch from Drive API as before
+                const response = await fetch(`${API_URL}?base64id=${meta.id}`);
+                base64Data = (await response.text()).trim().replace(/^"|"$/g, '');
+            }
+
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                img.crossOrigin = "anonymous";
+                img.onload = () => resolve(img);
+                img.onerror = () => reject(`Failed to load image ${index + 1}`);
+                img.src = base64Data;
+            });
+        });
+
+        highResImages = await Promise.all(fetchPromises);
+        statusEl.innerText = ">> ALL TARGETS OPTIMIZED ✓";
+        drawPoster();
+    } catch (err) {
+        console.error(err);
+        statusEl.innerText = ">> ERROR: LOADING FAILED";
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = "⚡ Load & Process Collage";
+    }
+};
+function drawPoster() {
+    if (!templateLoaded) return;
+
+    ctx.clearRect(0, 0, POSTER_W, POSTER_H);
+    ctx.drawImage(template, 0, 0, POSTER_W, POSTER_H);
+
+    if (highResImages.length > 0) {
+        const { x, y, w, h } = PHOTO_BOX;
+        const count = highResImages.length;
+        
+        ctx.save();
+        // 1. Create a Rounded Mask for the whole collage area
+        ctx.beginPath();
+        const r = 24;
+        ctx.moveTo(x + r, y); ctx.lineTo(x + w - r, y);
+        ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+        ctx.lineTo(x + w, y + h - r);
+        ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+        ctx.lineTo(x + r, y + h);
+        ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+        ctx.lineTo(x, y + r);
+        ctx.quadraticCurveTo(x, y, x + r, y);
+        ctx.closePath();
+        ctx.clip();
+
+        highResImages.forEach((photo, index) => {
+            let dx, dy, dw, dh;
+
+            // 2. Define the exact slot dimensions
+            if (count === 1) { [dx, dy, dw, dh] = [x, y, w, h]; }
+            else if (count === 2) { dw = w / 2; dh = h; dx = x + (index * dw); dy = y; }
+            else if (count === 3) {
+                if (index < 2) { dw = w / 2; dh = h / 2; dx = x + (index * dw); dy = y; }
+                else { dw = w; dh = h / 2; dx = x; dy = y + dh; }
+            } else {
+                dw = w / 2; dh = h / 2; dx = x + (index % 2 * dw);
+                dy = y + (Math.floor(index / 2) * dh);
+            }
+
+            // Inside drawPoster loop:
+const ratio = Math.min(dw / photo.naturalWidth, dh / photo.naturalHeight);
+const imgW = photo.naturalWidth * ratio;
+const imgH = photo.naturalHeight * ratio;
+
+// Center exactly in the slot
+const posX = dx + (dw - imgW) / 2;
+const posY = dy + (dh - imgH) / 2;
+
+ctx.fillStyle = "#ffedb6"; // Match your background color
+ctx.fillRect(dx, dy, dw, dh); // Fill gaps
+ctx.drawImage(photo, posX, posY, imgW, imgH);
+
+            ctx.save();
+            // Optional: Draw a 
+            
+            // 5. Draw divider lines between images
+            ctx.strokeStyle = "#ffedb6";
+            ctx.lineWidth = 4;
+            ctx.strokeRect(dx, dy, dw, dh);
+            ctx.restore();
+        });
+        ctx.restore();
+    }
+
+    // 6. Draw Text Overlays
+    const schoolVal = document.getElementById("school").value || "SCHOOL NAME";
+    drawAutoFitText(schoolVal.toUpperCase(), SCHOOL_BOX.x + SCHOOL_BOX.w / 2, SCHOOL_BOX.y + SCHOOL_BOX.h / 2 + 12, SCHOOL_BOX.w, 44, 22, "Oswald", "#111827");
+
+    const nameVal = document.getElementById("name").value || "AGENT NAME";
+    drawAutoFitText(nameVal.toUpperCase(), 540, 1150, 800, 48, 24, "Oswald", "#111827");
+}
+function drawAutoFitText(text, x, y, maxWidth, maxFontSize, minFontSize, fontFamily, color) {
+    let fontSize = maxFontSize;
+    ctx.textAlign = "center";
+    ctx.fillStyle = color;
+    do {
+        ctx.font = `bold ${fontSize}px ${fontFamily}`;
+        if (ctx.measureText(text).width <= maxWidth) break;
+        fontSize--;
+    } while (fontSize >= minFontSize);
+    ctx.fillText(text, x, y);
+}
+
+// --- 4. RATINGS & FORM SUBMISSION ---
+
+["Experience","Hospitality","Learning"].forEach(m => {
+    document.getElementById("ratingsBody").innerHTML += `
+        <div class="rate-row">
+            <span>${m}</span>
+            <div class="emojis">
+                <span onclick="rate(this)">🤩</span>
+                <span onclick="rate(this)">😊</span>
+                <span onclick="rate(this)">😐</span>
+                <span onclick="rate(this)">😡</span>
+            </div>
+        </div>`;
+});
+let cameraStream = null;
+const videoElement = document.getElementById('webcam');
+const cameraModalElement = document.getElementById('cameraModal');
+
+// 1. Start the Camera Stream
+async function openCamera() {
+    try {
+        cameraStream = await navigator.mediaDevices.getUserMedia({ 
+            video: { facingMode: "user", width: { ideal: 1280 }, height: { ideal: 720 } }, 
+            audio: false 
+        });
+        videoElement.srcObject = cameraStream;
+        cameraModalElement.style.display = 'flex';
+        statusEl.innerText = ">> CAMERA_ONLINE";
+    } catch (err) {
+        alert("Camera Error: Please ensure you are on HTTPS and have granted permissions.");
+        console.error(err);
+    }
+}
+
+// 2. Capture Frame and Save to Selection
+function takeSnapshot() {
+    const canvasCap = document.getElementById('captureCanvas');
+    const ctxCap = canvasCap.getContext('2d');
+    
+    // Set internal canvas resolution to match video feed
+    canvasCap.width = videoElement.videoWidth;
+    canvasCap.height = videoElement.videoHeight;
+    
+    // Flip horizontal to match mirrored preview
+    ctxCap.translate(canvasCap.width, 0);
+    ctxCap.scale(-1, 1);
+    ctxCap.drawImage(videoElement, 0, 0, canvasCap.width, canvasCap.height);
+    
+    const dataUrl = canvasCap.toDataURL('image/jpeg', 0.9);
+    
+    // Push into your existing selection logic
+    if (selectedMetaData.length < MAX_PHOTOS) {
+        selectedMetaData.push({
+            id: "cap_" + Date.now(),
+            thumbnail: dataUrl,
+            isLocal: true,
+            fullData: dataUrl
+        });
+        updateSelectionUI();
+        closeCamera();
+    } else {
+        alert(`Mission limit reached! (Max ${MAX_PHOTOS} photos)`);
+    }
+}
+
+// 3. Stop Stream and Close Modal
+function closeCamera() {
+    if (cameraStream) {
+        cameraStream.getTracks().forEach(track => track.stop());
+    }
+    cameraModalElement.style.display = 'none';
+    statusEl.innerText = ">> SYSTEM_READY";
+}
+function rate(el) {
+    el.parentElement.querySelectorAll("span").forEach(s => s.classList.remove("active"));
+    el.classList.add("active");
+}
+
+function editForm() {
+    document.getElementById("thankYouScreen").style.display = "none";
+}
+
+async function shareMission() {
+    canvas.toBlob(async (blob) => {
+        const file = new File([blob], "S2T_Poster.jpg", { type: "image/jpeg" });
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            await navigator.share({ files: [file], title: 'S2T 2026', text: 'My Mission Poster!' });
+        } else {
+            alert("Sharing not supported. Please Download!");
+        }
+    }, "image/jpeg", 0.9);
+}
+function generateInstaCaption() {
+  const name = document.getElementById("name").value;
+  const school = document.getElementById("school").value;
+  const grade = document.getElementById("grade").value;
+  const event = document.getElementById("event").value;
+
+  const emojis = {
+    "Junior Scientist": "🔬🚀",
+    "Senior Scientist": "🧪✨",
+    "Photography": "📸🎨",
+    "English Essay Writing": "✍️📖",
+    "Tamil Essay Writing": "✍️📝",
+    "Podcast": "🎙️🔥",
+    "Logo Design": "🎨💡",
+    "SDG Treasure Hunt": "🌍🧩",
+    "Scouts Activities": "⛺🏕️",
+    "Rise Above": "🔥🌟"
+  };
+
+  const energy = emojis[event] || "🚀✨";
+
+  return `
+  Hello Guys!
+${energy} S2T 2026 – Mission Complete! ${energy}
+I'm thrilled to be participating in ${event} at School Towards Technology(S2T), organized by Sri Sairam Engineering College. It’s not just an event; it’s a platform to learn, innovate, and connect with the brightest minds. 
+"Ready to dive deep into the world of Technology and push my boundaries!"
+
+Big thanks to @sairaminstitutions for hosting such an empowering initiative. Let the journey from S2T begin! ✨
+
+#S2T2026#S2T6.0#Innovation#StudentSuccess#TechEvents#LearningJourney
+#SairamInstitutions#SairamEngineeringCollege #SairamEngg 
+#DigitallySairam#TogetherWeCan #SDGgoals #Qualityeducation 
+#DecadeOfDelivery #SairamSDG #SairamRAISE #SairamEOMS 
+#SairamSAP
+`.trim();
+}
+function copyCaption() {
+  const captionBox = document.getElementById("instaCaption");
+  captionBox.select();
+  captionBox.setSelectionRange(0, 99999);
+  navigator.clipboard.writeText(captionBox.value);
+  alert("📋 Instagram caption copied!");
+}
+
+missionForm.onsubmit = async (e) => {
+    e.preventDefault();
+
+    if (highResImages.length === 0) {
+        alert("⚠️ Please click 'Load & Process Collage' before generating the final poster!");
+        return;
+    }
+
+    const posterData = canvas.toDataURL("image/jpeg", 0.8);
+    statusEl.innerText = ">> UPLOADING TO MISSION CONTROL...";
+
+    const ratings = Array.from(document.querySelectorAll('.rate-row'))
+        .map(row => `${row.querySelector('span').innerText}: ${row.querySelector('.active')?.innerText || 'N/A'}`)
+        .join(' | ');
+
+    const payload = {
+        name: document.getElementById("name").value,
+        school: document.getElementById("school").value,
+        grade: document.getElementById("grade").value,
+        event: document.getElementById("event").value,
+        best: document.getElementById("best").value,
+        improve: document.getElementById("improve").value,
+        ratings: ratings,
+        poster: posterData
+    };
+    document.getElementById("instaCaption").value = generateInstaCaption();
+    document.getElementById("thankYouScreen").style.display = "block";
+    const tyCanvas = document.getElementById("thankYouPreview");
+    tyCanvas.getContext("2d").drawImage(canvas, 0, 0, 500, 625);
+    document.getElementById("downloadLink").href = posterData;
+
+    fetch(API_URL, { method: "POST", body: JSON.stringify(payload) })
+        .then(() => statusEl.innerText = ">> MISSION_ACCOMPLISHED ✓")
+        .catch(() => statusEl.innerText = ">> UPLOAD_FAILED");
+};
+</script>
+
+</body>
+</html>
+
